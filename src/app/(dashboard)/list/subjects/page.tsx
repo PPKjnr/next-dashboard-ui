@@ -3,8 +3,8 @@ import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import Link from "next/link";
 import { role, subjectsData } from "@/lib/data";
+import FormModal from "@/components/FormModal";
 
 type Subject = {
   id: number;
@@ -36,24 +36,14 @@ const SubjectList = () => {
         <td className={"hidden md:table-cell"}>{item.teachers.join(",")}</td>
         <td className="">
           <div className="flex items-center gap-2">
-            <Link href={`/list/teachers/${item.id}`}>
-              <button
-                className={
-                  "w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
-                }
-              >
-                <Image src={"/edit.png"} alt={""} height={16} width={16} />
-              </button>
-            </Link>
-            {role === "admin" && (
-              <button
-                className={
-                  "w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple"
-                }
-              >
-                <Image src={"/delete.png"} alt={""} height={16} width={16} />
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {role === "admin" && (
+                <>
+                  <FormModal table={"subject"} type={"update"} data={item} />
+                  <FormModal table={"subject"} type={"delete"} id={item.id} />
+                </>
+              )}
+            </div>
           </div>
         </td>
       </tr>
@@ -91,13 +81,7 @@ const SubjectList = () => {
             </button>
 
             {role === "admin" && (
-              <button
-                className={
-                  "w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
-                }
-              >
-                <Image src={"/plus.png"} alt={""} width={14} height={14} />
-              </button>
+              <FormModal table={"subject"} type={"create"} />
             )}
           </div>
         </div>
